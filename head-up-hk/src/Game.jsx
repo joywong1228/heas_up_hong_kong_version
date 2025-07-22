@@ -105,7 +105,7 @@ export default function Game({
           width: "100vw",
           textAlign: "center",
           marginTop: 12,
-          fontSize: 28,
+          fontSize: 20,
           fontWeight: 700,
         }}
       >
