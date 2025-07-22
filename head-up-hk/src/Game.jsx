@@ -37,18 +37,25 @@ export default function Game({
 
   function renderWord(word) {
     if (!word) return <span style={{ color: "#e11d48" }}>冇晒啦!</span>;
-    if (typeof word === "string")
+    if (typeof word === "string") {
       return <span style={{ fontSize: 28, fontWeight: 600 }}>{word}</span>;
+    }
     if (typeof word === "object") {
       return (
-        <>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <span style={{ fontSize: 28, fontWeight: 600 }}>{word.chinese}</span>
           {word.english && (
-            <span style={{ fontSize: 18, color: "#555", marginTop: 8 }}>
+            <span style={{ fontSize: 28, fontWeight: 600, marginTop: 8 }}>
               {word.english}
             </span>
           )}
-        </>
+        </div>
       );
     }
     return null;
