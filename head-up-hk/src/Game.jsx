@@ -10,19 +10,10 @@ export default function Game({
 }) {
   let clickTimeout = useRef(null);
 
-  // Handles single/double click logic for both the card and the container
-  function handleMainClick(e) {
-    // Ignore if click is on button
+  // Catch clicks anywhere except on buttons
+  function handleOverlayClick(e) {
+    // If the click is on a button, ignore
     if (e.target.closest("button")) return;
-    triggerClickLogic();
-  }
-
-  function handleCardClick(e) {
-    // Always trigger even if overlay would also fire
-    triggerClickLogic();
-  }
-
-  function triggerClickLogic() {
     if (clickTimeout.current !== null) {
       clearTimeout(clickTimeout.current);
       clickTimeout.current = null;
@@ -45,14 +36,13 @@ export default function Game({
       style={{
         minHeight: "100vh",
         width: "100vw",
+        position: "relative",
         background: "#f8fafc",
+        overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        position: "relative",
       }}
-      onClick={handleMainClick}
-      onDoubleClick={handleMainClick}
     >
       <div className="timer-bar">
         <span className="timer">⏰ {timer} 秒</span>
@@ -67,8 +57,6 @@ export default function Game({
           zIndex: 2,
           pointerEvents: "auto",
         }}
-        onClick={handleCardClick}
-        onDoubleClick={handleCardClick}
       >
         {words[current] || <span style={{ color: "#e11d48" }}>冇晒啦!</span>}
       </div>
@@ -116,6 +104,17 @@ export default function Game({
       <div className="hint" style={{ zIndex: 2 }}>
         <b>單擊</b>：估啱 | <b>雙擊</b>：跳過
       </div>
+      {/* Overlay */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 1,
+          // cursor: "pointer", // uncomment if you want
+        }}
+        onClick={handleOverlayClick}
+        onDoubleClick={handleOverlayClick}
+      />
     </div>
   );
 }

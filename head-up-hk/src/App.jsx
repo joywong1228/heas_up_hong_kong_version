@@ -141,6 +141,7 @@ export default function App() {
           score={score}
           timer={timer}
           nextWord={nextWord}
+          goHome={() => setStage("home")}
         />
       )}
 
