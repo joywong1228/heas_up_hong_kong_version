@@ -7,28 +7,55 @@ export default function Game({
   score,
   timer,
   nextWord,
+  goHome,
 }) {
   let clickTimeout = useRef(null);
 
-  // Catch clicks anywhere except on buttons
-  function handleOverlayClick(e) {
-    // If the click is on a button, ignore
+  function handleClick(e) {
+    if (e.target.closest("button")) return;
+    if (clickTimeout.current !== null) {
+      // This is actually a double click: do nothing here (let double handler handle it)
+      return;
+    }
+    clickTimeout.current = setTimeout(() => {
+      nextWord(true); // single click: correct
+      clickTimeout.current = null;
+    }, 230);
+  }
+
+  function handleDoubleClick(e) {
     if (e.target.closest("button")) return;
     if (clickTimeout.current !== null) {
       clearTimeout(clickTimeout.current);
       clickTimeout.current = null;
-      nextWord(false); // double click: skip
-    } else {
-      clickTimeout.current = setTimeout(() => {
-        nextWord(true); // single click: correct
-        clickTimeout.current = null;
-      }, 230);
     }
+    nextWord(false); // double click: skip
   }
 
   useEffect(() => {
     return () => clearTimeout(clickTimeout.current);
   }, []);
+
+  // ...renderWord etc remains unchanged...
+
+  function renderWord(word) {
+    if (!word) return <span style={{ color: "#e11d48" }}>冇晒啦!</span>;
+    if (typeof word === "string")
+      return <span style={{ fontSize: 28, fontWeight: 600 }}>{word}</span>;
+    if (typeof word === "object") {
+      return (
+        <>
+          <span style={{ fontSize: 28, fontWeight: 600 }}>{word.chinese}</span>
+          {word.english && (
+            <span style={{ fontSize: 18, color: "#555", marginTop: 8 }}>
+              {word.english}
+            </span>
+          )}
+        </>
+      );
+    }
+    return null;
+  }
 
   return (
     <div
@@ -43,7 +70,28 @@ export default function Game({
         flexDirection: "column",
         alignItems: "center",
       }}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
     >
+      <button
+        onClick={goHome}
+        style={{
+          position: "absolute",
+          top: 24,
+          left: 24,
+          background: "#ececec",
+          border: "none",
+          borderRadius: 8,
+          padding: "8px 20px",
+          fontWeight: 600,
+          fontSize: 16,
+          cursor: "pointer",
+          zIndex: 9,
+        }}
+      >
+        ← 返回主頁
+      </button>
+
       <div className="timer-bar">
         <span className="timer">⏰ {timer} 秒</span>
       </div>
@@ -56,9 +104,17 @@ export default function Game({
         style={{
           zIndex: 2,
           pointerEvents: "auto",
+          minHeight: 80,
+          minWidth: 220,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
       >
-        {words[current] || <span style={{ color: "#e11d48" }}>冇晒啦!</span>}
+        {renderWord(words[current])}
       </div>
       <div
         style={{
@@ -104,17 +160,6 @@ export default function Game({
       <div className="hint" style={{ zIndex: 2 }}>
         <b>單擊</b>：估啱 | <b>雙擊</b>：跳過
       </div>
-      {/* Overlay */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 1,
-          // cursor: "pointer", // uncomment if you want
-        }}
-        onClick={handleOverlayClick}
-        onDoubleClick={handleOverlayClick}
-      />
     </div>
   );
 }
