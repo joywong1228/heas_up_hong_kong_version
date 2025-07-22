@@ -1,5 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import categories from "./data/categories.json";
+import Game from "./Game"; // <-- NEW IMPORT
+import "./App.css";
 
 const timeOptions = [
   { label: "30秒", value: 30 },
@@ -18,12 +20,17 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [timer, setTimer] = useState(60);
   const [roundSeconds, setRoundSeconds] = useState(60);
-  const intervalId = useRef(null);
   const [showRules, setShowRules] = useState(false);
+  const [readyToStart, setReadyToStart] = useState(false);
 
-  function startGame(selectedCategory) {
-    setCategory(selectedCategory);
-    setWords([...categories[selectedCategory]].sort(() => 0.5 - Math.random()));
+  const intervalId = useRef(null);
+
+  useEffect(() => {
+    setReadyToStart(!!category && !!roundSeconds);
+  }, [category, roundSeconds]);
+
+  function startGame() {
+    setWords([...categories[category]].sort(() => 0.5 - Math.random()));
     setCurrent(0);
     setScore(0);
     setTimer(roundSeconds);
@@ -58,21 +65,6 @@ export default function App() {
     if (intervalId.current) clearInterval(intervalId.current);
   }
 
-  // Single click: correct, double click: pass
-  let clickTimeout = useRef(null);
-  function handleWordClick() {
-    if (clickTimeout.current !== null) {
-      clearTimeout(clickTimeout.current);
-      clickTimeout.current = null;
-      nextWord(false); // double click: skip
-    } else {
-      clickTimeout.current = setTimeout(() => {
-        nextWord(true); // single click: correct
-        clickTimeout.current = null;
-      }, 230);
-    }
-  }
-
   function RulesModal() {
     return (
       <div className="rules-modal-bg">
@@ -99,21 +91,17 @@ export default function App() {
           <div className="title">
             Head Up <span className="subtitle">香港版</span>
           </div>
-          <button
-            className="btn"
-            style={{ marginBottom: 12 }}
-            onClick={() => setShowRules(true)}
-          >
+          <button className="btn rules-btn" onClick={() => setShowRules(true)}>
             遊戲規則
           </button>
-          <div style={{ marginTop: 18, fontWeight: 600, marginBottom: 8 }}>
+          <div style={{ fontWeight: 600, marginTop: 18, marginBottom: 8 }}>
             選擇回合時間：
           </div>
-          <div className="categories" style={{ marginBottom: 18 }}>
+          <div className="times">
             {timeOptions.map((opt) => (
               <button
                 key={opt.value}
-                className={`btn secondary${
+                className={`btn-secondary${
                   roundSeconds === opt.value ? " selected" : ""
                 }`}
                 onClick={() => setRoundSeconds(opt.value)}
@@ -125,37 +113,35 @@ export default function App() {
           <div style={{ fontWeight: 600, marginBottom: 8 }}>選擇類別：</div>
           <div className="categories">
             {categoryNames.map((c) => (
-              <button key={c} className="btn" onClick={() => startGame(c)}>
+              <button
+                key={c}
+                className={`btn${category === c ? " selected" : ""}`}
+                onClick={() => setCategory(c)}
+              >
                 {c}
               </button>
             ))}
           </div>
+          <button
+            className="confirm-btn"
+            disabled={!readyToStart}
+            onClick={startGame}
+          >
+            確認開始
+          </button>
           {showRules && <RulesModal />}
         </>
       )}
 
       {stage === "game" && (
-        <>
-          <div className="timer-bar">
-            <span className="timer">⏰ {timer} 秒</span>
-          </div>
-          <div className="score-bar">
-            類別: {category}　|　分數: {score}
-          </div>
-          <div
-            className="word-card"
-            tabIndex={0}
-            onClick={handleWordClick}
-            onDoubleClick={handleWordClick}
-          >
-            {words[current] || (
-              <span style={{ color: "#e11d48" }}>冇晒啦!</span>
-            )}
-          </div>
-          <div className="hint">
-            <b>單擊</b>：估啱　|　<b>雙擊</b>：跳過
-          </div>
-        </>
+        <Game
+          words={words}
+          current={current}
+          category={category}
+          score={score}
+          timer={timer}
+          nextWord={nextWord}
+        />
       )}
 
       {stage === "end" && (
@@ -164,7 +150,7 @@ export default function App() {
             <span className="timer">遊戲結束</span>
           </div>
           <div className="end-score">分數: {score}</div>
-          <button className="btn" onClick={restart}>
+          <button className="confirm-btn" onClick={restart}>
             再嚟一次
           </button>
         </>
