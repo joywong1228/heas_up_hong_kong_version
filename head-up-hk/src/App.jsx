@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import categories from "./data/categories.json";
 import Game from "./Game";
 import AdminPage from "./AdminPage";
+import CustomDeckPage from "./CustomDeckPage";
 import "./App.css";
 import { db } from "../src/_utils/firebase";
 import {
@@ -23,7 +24,7 @@ const timeOptions = [
 ];
 const categoryNames = Object.keys(categories);
 
-// 🔵 Firestore: Deck usage tracker
+// Firestore: Deck usage tracker
 async function recordDeckUsage(category) {
   try {
     const colRef = collection(db, "categoryStats");
@@ -36,7 +37,6 @@ async function recordDeckUsage(category) {
       await addDoc(colRef, { category, count: 1 });
     }
   } catch (err) {
-    // 失敗都唔阻遊戲，只係唔計到數
     console.error("Failed to record deck usage:", err);
   }
 }
@@ -56,10 +56,20 @@ export default function App() {
   const intervalId = useRef(null);
   const countdownTimer = useRef(null);
 
-  // ------------------------- 主流程 --------------------------
+  // 🔵 自定義 Deck 遊戲專用
+  function startCustomDeckGame(wordsArr) {
+    setWords([...wordsArr]);
+    setCurrent(0);
+    setScore(0);
+    setWrong(0);
+    setResults([]);
+    setTimer(roundSeconds);
+    setStage("game");
+  }
 
+  // 主流程
   async function startGame() {
-    // 🔵 記錄 deck usage（async，不會影響遊戲流程）
+    // 記錄 deck usage
     recordDeckUsage(category);
 
     setCountdown(3);
@@ -126,7 +136,7 @@ export default function App() {
     restart();
   }
 
-  // ------------------------- 規則 Modal --------------------------
+  // 規則 Modal
   function RulesModal() {
     return (
       <div
@@ -211,6 +221,19 @@ export default function App() {
             >
               規則
             </button>
+            <button
+              className="btn"
+              style={{
+                background: "#34d399",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: 16,
+                marginLeft: 6,
+              }}
+              onClick={() => setStage("customDeck")}
+            >
+              ➕ 自定義題庫
+            </button>
             {/* Admin Only 按鈕 */}
             <button
               className="btn"
@@ -264,7 +287,12 @@ export default function App() {
           {showRules && <RulesModal />}
         </>
       )}
-
+      {stage === "customDeck" && (
+        <CustomDeckPage
+          goHome={() => setStage("home")}
+          startWithDeck={startCustomDeckGame}
+        />
+      )}
       {stage === "countdown" && (
         <div
           style={{
@@ -284,7 +312,6 @@ export default function App() {
           {countdown > 0 ? countdown : "GO!"}
         </div>
       )}
-
       {stage === "game" && (
         <Game
           words={words}
@@ -297,7 +324,6 @@ export default function App() {
           goHome={goHome}
         />
       )}
-
       {stage === "end" && (
         <>
           <div className="timer-bar">
@@ -358,7 +384,20 @@ export default function App() {
           </button>
         </>
       )}
-      {stage === "admin" && <AdminPage goHome={() => setStage("home")} />}
+      {stage === "admin" && (
+        <AdminPage
+          goHome={() => setStage("home")}
+          startWithDeck={(words) => {
+            setWords(words);
+            setCurrent(0);
+            setScore(0);
+            setWrong(0);
+            setResults([]);
+            setTimer(roundSeconds);
+            setStage("game");
+          }}
+        />
+      )}{" "}
     </div>
   );
 }

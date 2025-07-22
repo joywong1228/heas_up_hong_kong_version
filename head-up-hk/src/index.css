@@ -1,151 +1,68 @@
-/* src/App.css */
-body, #root {
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
   margin: 0;
-  padding: 0;
-  background: #f9fafb;
-  font-family: 'Noto Sans TC', 'PingFang TC', 'Arial', sans-serif;
-}
-
-.app-container {
+  display: flex;
+  place-items: center;
+  min-width: 320px;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 40px;
 }
 
-.header-title {
-  font-size: 2.6rem;
-  color: #2463eb;
-  margin-bottom: 0.2em;
-  font-weight: bold;
-  letter-spacing: 0.03em;
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 
-.category-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  justify-content: center;
-  margin-top: 16px;
-  margin-bottom: 32px;
-}
-.category-btn {
-  background: #34d399;
-  color: #fff;
-  border: none;
-  border-radius: 1em;
-  padding: 0.8em 2em;
-  font-size: 1.15rem;
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
   font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: border-color 0.25s;
 }
-.category-btn:hover { background: #059669; }
-
-.rules-btn {
-  background: #2463eb;
-  color: #fff;
-  border: none;
-  border-radius: 0.6em;
-  font-size: 1rem;
-  padding: 0.7em 1.7em;
-  margin-bottom: 12px;
-  cursor: pointer;
+button:hover {
+  border-color: #646cff;
 }
-.rules-btn:active { background: #1d4ed8; }
-
-.rules-modal-bg {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.22); z-index: 10;
-  display: flex; align-items: center; justify-content: center;
-}
-.rules-modal {
-  background: #fff;
-  border-radius: 14px;
-  max-width: 340px;
-  padding: 28px 20px 18px 20px;
-  text-align: left;
-  box-shadow: 0 6px 30px #0001;
-}
-.rules-modal h2 { color: #2463eb; margin-bottom: 10px; }
-.rules-modal ol { font-size: 1.1em; padding-left: 1.1em; }
-.rules-modal button {
-  width: 100%; padding: 10px; font-size: 1.07em;
-  background: #2463eb; color: #fff; border: none; border-radius: 8px; margin-top: 18px;
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
-.timer-bar {
-  width: 100vw;
-  position: fixed;
-  top: 0; left: 0;
-  background: #f1f5f9;
-  z-index: 2;
-  height: 52px;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 1px 6px #0001;
-}
-.timer-inner {
-  font-size: 1.4em;
-  font-weight: bold;
-  color: #e11d48;
-  letter-spacing: 0.03em;
-  background: #fff;
-  border-radius: 0.7em;
-  padding: 8px 20px;
-  border: 2.5px solid #e11d48;
-}
-
-.game-content {
-  margin-top: 80px;
-  text-align: center;
-}
-.word-card {
-  font-size: 4rem;
-  background: #fff;
-  border-radius: 24px;
-  padding: 1.5em 0.7em;
-  margin: 40px auto 18px auto;
-  width: 90vw;
-  max-width: 410px;
-  color: #111;
-  font-weight: 700;
-  border: 3px solid #2463eb;
-  user-select: none;
-  cursor: pointer;
-  transition: background 0.08s;
-}
-.word-card:active { background: #f3f5f7; }
-
-.score {
-  font-size: 1.2em;
-  margin-bottom: 18px;
-  color: #15803d;
-  font-weight: 600;
-}
-.end-score {
-  font-size: 3.2rem;
-  margin: 36px 0;
-  color: #15803d;
-  font-weight: 800;
-}
-.retry-btn {
-  background: #2463eb;
-  color: #fff;
-  border: none;
-  border-radius: 1em;
-  font-size: 1.3rem;
-  padding: 0.7em 2em;
-  cursor: pointer;
-  font-weight: 600;
-}
-.retry-btn:active { background: #1d4ed8; }
-
-.game-hint {
-  font-size: 1rem;
-  color: #999;
-  margin-top: 22px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
 }
