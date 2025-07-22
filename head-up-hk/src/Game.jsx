@@ -54,6 +54,7 @@ export default function Game({
     return null;
   }
 
+  // ...上略
   return (
     <div
       className="game-fullscreen"
@@ -70,10 +71,11 @@ export default function Game({
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
     >
+      {/* 返回主頁（左上） */}
       <button
         onClick={goHome}
         style={{
-          position: "absolute",
+          position: "fixed", // 用 fixed
           top: 24,
           left: 24,
           background: "#ececec",
@@ -83,13 +85,23 @@ export default function Game({
           fontWeight: 600,
           fontSize: 16,
           cursor: "pointer",
-          zIndex: 9,
+          zIndex: 99,
         }}
       >
         ← 返回主頁
       </button>
 
-      <div className="timer-bar">
+      {/* Timer Bar（頂部中間，唔會被蓋住） */}
+      <div
+        className="timer-bar"
+        style={{
+          width: "100vw",
+          textAlign: "center",
+          marginTop: 12,
+          fontSize: 28,
+          fontWeight: 700,
+        }}
+      >
         <span className="timer">⏰ {timer} 秒</span>
       </div>
       <div className="score-bar">

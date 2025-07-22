@@ -1,7 +1,18 @@
 import { useState, useRef } from "react";
 import categories from "./data/categories.json";
 import Game from "./Game";
+import AdminPage from "./AdminPage";
 import "./App.css";
+import { db } from "../src/_utils/firebase";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 
 const timeOptions = [
   { label: "30秒", value: 30 },
@@ -12,23 +23,64 @@ const timeOptions = [
 ];
 const categoryNames = Object.keys(categories);
 
+// 🔵 Firestore: Deck usage tracker
+async function recordDeckUsage(category) {
+  try {
+    const colRef = collection(db, "categoryStats");
+    const q = query(colRef, where("category", "==", category));
+    const snap = await getDocs(q);
+
+    if (!snap.empty) {
+      await updateDoc(snap.docs[0].ref, { count: increment(1) });
+    } else {
+      await addDoc(colRef, { category, count: 1 });
+    }
+  } catch (err) {
+    // 失敗都唔阻遊戲，只係唔計到數
+    console.error("Failed to record deck usage:", err);
+  }
+}
+
 export default function App() {
   const [stage, setStage] = useState("home");
   const [category, setCategory] = useState("");
   const [words, setWords] = useState([]);
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
+  const [wrong, setWrong] = useState(0);
   const [timer, setTimer] = useState(60);
   const [roundSeconds, setRoundSeconds] = useState(60);
   const [results, setResults] = useState([]);
   const [showRules, setShowRules] = useState(false);
+  const [countdown, setCountdown] = useState(0);
   const intervalId = useRef(null);
+  const countdownTimer = useRef(null);
 
-  function startGame() {
+  // ------------------------- 主流程 --------------------------
+
+  async function startGame() {
+    // 🔵 記錄 deck usage（async，不會影響遊戲流程）
+    recordDeckUsage(category);
+
+    setCountdown(3);
+    setStage("countdown");
+    let cd = 3;
+    countdownTimer.current = setInterval(() => {
+      cd--;
+      setCountdown(cd);
+      if (cd <= 0) {
+        clearInterval(countdownTimer.current);
+        actuallyStartGame();
+      }
+    }, 1000);
+  }
+
+  function actuallyStartGame() {
     const arr = [...categories[category]].sort(() => 0.5 - Math.random());
     setWords(arr);
     setCurrent(0);
     setScore(0);
+    setWrong(0);
     setResults([]);
     setTimer(roundSeconds);
     setStage("game");
@@ -49,6 +101,7 @@ export default function App() {
   function nextWord(correct) {
     setResults((prev) => [...prev, { word: words[current], correct }]);
     if (correct) setScore((s) => s + 1);
+    else setWrong((w) => w + 1);
     setCurrent((i) => i + 1);
     if (current + 1 >= words.length) {
       if (intervalId.current) clearInterval(intervalId.current);
@@ -62,16 +115,18 @@ export default function App() {
     setWords([]);
     setCurrent(0);
     setScore(0);
+    setWrong(0);
     setResults([]);
     setTimer(roundSeconds);
     if (intervalId.current) clearInterval(intervalId.current);
+    if (countdownTimer.current) clearInterval(countdownTimer.current);
   }
 
   function goHome() {
     restart();
   }
 
-  // 規則 Modal
+  // ------------------------- 規則 Modal --------------------------
   function RulesModal() {
     return (
       <div
@@ -104,7 +159,7 @@ export default function App() {
             <li>
               <b>單擊</b>畫面/按「估啱」＝記作對
               <br />
-              <b>雙擊</b>畫面/按「跳過」＝跳過
+              <b>雙擊</b>畫面/按「跳過」＝記作錯
             </li>
             <li>時間內盡量答中最多！</li>
           </ol>
@@ -129,6 +184,7 @@ export default function App() {
     );
   }
 
+  // ------------------------- UI Render --------------------------
   return (
     <div className="container">
       {stage === "home" && (
@@ -136,11 +192,10 @@ export default function App() {
           <div className="title">
             大電視 <span className="subtitle">Demo版</span>
           </div>
-          {/* 規則按鈕就在這裡 */}
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: "space-between",
               margin: "18px 0 4px 0",
             }}
           >
@@ -156,8 +211,20 @@ export default function App() {
             >
               規則
             </button>
+            {/* Admin Only 按鈕 */}
+            <button
+              className="btn"
+              style={{
+                background: "#333",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: 16,
+              }}
+              onClick={() => setStage("admin")}
+            >
+              Admin Only
+            </button>
           </div>
-          {/* 下面是選擇時間 */}
           <div style={{ fontWeight: 600, marginTop: 8, marginBottom: 8 }}>
             選擇回合時間：
           </div>
@@ -198,12 +265,33 @@ export default function App() {
         </>
       )}
 
+      {stage === "countdown" && (
+        <div
+          style={{
+            width: "100vw",
+            height: "90vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: 90,
+            color: "#f59e42",
+            fontWeight: 800,
+            letterSpacing: 8,
+            transition: "all 0.4s",
+            userSelect: "none",
+          }}
+        >
+          {countdown > 0 ? countdown : "GO!"}
+        </div>
+      )}
+
       {stage === "game" && (
         <Game
           words={words}
           current={current}
           category={category}
           score={score}
+          wrong={wrong}
           timer={timer}
           nextWord={nextWord}
           goHome={goHome}
@@ -215,7 +303,10 @@ export default function App() {
           <div className="timer-bar">
             <span className="timer">遊戲結束</span>
           </div>
-          <div className="end-score">分數: {score}</div>
+          <div className="end-score">
+            分數: <span style={{ color: "#22c55e" }}>{score}</span> /{" "}
+            <span style={{ color: "#ef4444" }}>{wrong}</span>
+          </div>
           <div style={{ margin: "20px 0", fontWeight: 600 }}>回顧：</div>
           <ul
             style={{
@@ -248,7 +339,11 @@ export default function App() {
                     <span>{res.word.chinese}</span>
                     {res.word.english && (
                       <span
-                        style={{ fontSize: 15, color: "#555", marginLeft: 10 }}
+                        style={{
+                          fontSize: 15,
+                          color: "#555",
+                          marginLeft: 10,
+                        }}
                       >
                         {res.word.english}
                       </span>
@@ -263,6 +358,7 @@ export default function App() {
           </button>
         </>
       )}
+      {stage === "admin" && <AdminPage goHome={() => setStage("home")} />}
     </div>
   );
 }
