@@ -14,7 +14,6 @@ export default function Game({
   function handleClick(e) {
     if (e.target.closest("button")) return;
     if (clickTimeout.current !== null) {
-      // This is actually a double click: do nothing here (let double handler handle it)
       return;
     }
     clickTimeout.current = setTimeout(() => {
@@ -35,8 +34,6 @@ export default function Game({
   useEffect(() => {
     return () => clearTimeout(clickTimeout.current);
   }, []);
-
-  // ...renderWord etc remains unchanged...
 
   function renderWord(word) {
     if (!word) return <span style={{ color: "#e11d48" }}>冇晒啦!</span>;

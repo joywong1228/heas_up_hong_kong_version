@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import categories from "./data/categories.json";
-import Game from "./Game"; // <-- NEW IMPORT
+import Game from "./Game";
 import "./App.css";
 
 const timeOptions = [
@@ -20,19 +20,16 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [timer, setTimer] = useState(60);
   const [roundSeconds, setRoundSeconds] = useState(60);
+  const [results, setResults] = useState([]);
   const [showRules, setShowRules] = useState(false);
-  const [readyToStart, setReadyToStart] = useState(false);
-
   const intervalId = useRef(null);
 
-  useEffect(() => {
-    setReadyToStart(!!category && !!roundSeconds);
-  }, [category, roundSeconds]);
-
   function startGame() {
-    setWords([...categories[category]].sort(() => 0.5 - Math.random()));
+    const arr = [...categories[category]].sort(() => 0.5 - Math.random());
+    setWords(arr);
     setCurrent(0);
     setScore(0);
+    setResults([]);
     setTimer(roundSeconds);
     setStage("game");
 
@@ -50,9 +47,13 @@ export default function App() {
   }
 
   function nextWord(correct) {
+    setResults((prev) => [...prev, { word: words[current], correct }]);
     if (correct) setScore((s) => s + 1);
     setCurrent((i) => i + 1);
-    if (current + 1 >= words.length) setStage("end");
+    if (current + 1 >= words.length) {
+      if (intervalId.current) clearInterval(intervalId.current);
+      setStage("end");
+    }
   }
 
   function restart() {
@@ -61,24 +62,68 @@ export default function App() {
     setWords([]);
     setCurrent(0);
     setScore(0);
+    setResults([]);
     setTimer(roundSeconds);
     if (intervalId.current) clearInterval(intervalId.current);
   }
 
+  function goHome() {
+    restart();
+  }
+
+  // 規則 Modal
   function RulesModal() {
     return (
-      <div className="rules-modal-bg">
-        <div className="rules-modal">
-          <h2>遊戲規則</h2>
-          <ol>
-            <li>選擇一個類別和回合時間開始遊戲。</li>
-            <li>每次顯示一個詞語，讓其他人用粵語提示你猜。</li>
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,0.15)",
+          zIndex: 100,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onClick={() => setShowRules(false)}
+      >
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: 16,
+            boxShadow: "0 4px 32px #9994",
+            padding: 28,
+            maxWidth: 340,
+            textAlign: "center",
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2 style={{ fontWeight: 700, marginBottom: 12 }}>遊戲規則</h2>
+          <ol style={{ textAlign: "left", fontSize: 17, margin: "0 0 14px 0" }}>
+            <li>選擇類別和時間開始遊戲。</li>
+            <li>每次顯示一個詞語，由隊友用粵語提示你猜。</li>
             <li>
-              <b>單擊</b>詞語＝答對，<b>雙擊</b>詞語＝跳過。
+              <b>單擊</b>畫面/按「估啱」＝記作對
+              <br />
+              <b>雙擊</b>畫面/按「跳過」＝跳過
             </li>
             <li>時間內盡量答中最多！</li>
           </ol>
-          <button onClick={() => setShowRules(false)}>明白了</button>
+          <button
+            style={{
+              marginTop: 12,
+              borderRadius: 8,
+              border: "none",
+              background: "#22c55e",
+              color: "#fff",
+              padding: "9px 34px",
+              fontWeight: 600,
+              fontSize: 18,
+              cursor: "pointer",
+            }}
+            onClick={() => setShowRules(false)}
+          >
+            明白了
+          </button>
         </div>
       </div>
     );
@@ -89,12 +134,31 @@ export default function App() {
       {stage === "home" && (
         <>
           <div className="title">
-            Head Up <span className="subtitle">香港版</span>
+            Head Up <span className="subtitle">Demo版</span>
           </div>
-          <button className="btn rules-btn" onClick={() => setShowRules(true)}>
-            遊戲規則
-          </button>
-          <div style={{ fontWeight: 600, marginTop: 18, marginBottom: 8 }}>
+          {/* 規則按鈕就在這裡 */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              margin: "18px 0 4px 0",
+            }}
+          >
+            <button
+              className="btn"
+              style={{
+                background: "#f59e42",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: 16,
+              }}
+              onClick={() => setShowRules(true)}
+            >
+              規則
+            </button>
+          </div>
+          {/* 下面是選擇時間 */}
+          <div style={{ fontWeight: 600, marginTop: 8, marginBottom: 8 }}>
             選擇回合時間：
           </div>
           <div className="times">
@@ -124,8 +188,9 @@ export default function App() {
           </div>
           <button
             className="confirm-btn"
-            disabled={!readyToStart}
+            disabled={!category}
             onClick={startGame}
+            style={{ marginTop: 22 }}
           >
             確認開始
           </button>
@@ -141,7 +206,7 @@ export default function App() {
           score={score}
           timer={timer}
           nextWord={nextWord}
-          goHome={() => setStage("home")}
+          goHome={goHome}
         />
       )}
 
@@ -151,6 +216,48 @@ export default function App() {
             <span className="timer">遊戲結束</span>
           </div>
           <div className="end-score">分數: {score}</div>
+          <div style={{ margin: "20px 0", fontWeight: 600 }}>回顧：</div>
+          <ul
+            style={{
+              width: 320,
+              padding: 0,
+              margin: "0 auto",
+              listStyle: "none",
+            }}
+          >
+            {results.map((res, idx) => (
+              <li
+                key={idx}
+                style={{
+                  padding: "6px 0",
+                  borderBottom: "1px solid #eee",
+                  color: res.correct ? "#22c55e" : "#ef4444",
+                  fontWeight: 600,
+                  fontSize: 18,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <span style={{ marginRight: 10 }}>
+                  {res.correct ? "✔️" : "❌"}
+                </span>
+                {typeof res.word === "string" ? (
+                  res.word
+                ) : (
+                  <>
+                    <span>{res.word.chinese}</span>
+                    {res.word.english && (
+                      <span
+                        style={{ fontSize: 15, color: "#555", marginLeft: 10 }}
+                      >
+                        {res.word.english}
+                      </span>
+                    )}
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
           <button className="confirm-btn" onClick={restart}>
             再嚟一次
           </button>
