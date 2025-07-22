@@ -134,7 +134,7 @@ export default function App() {
       {stage === "home" && (
         <>
           <div className="title">
-            Head Up <span className="subtitle">Demo版</span>
+            大電視 <span className="subtitle">Demo版</span>
           </div>
           {/* 規則按鈕就在這裡 */}
           <div
