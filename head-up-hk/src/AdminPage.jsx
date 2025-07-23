@@ -188,14 +188,18 @@ export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
               cursor: "pointer",
               boxShadow: "0 2px 8px #0002",
             }}
-            onClick={() =>
-              startWithDeck(
-                movies.map((m) => ({
-                  chinese: m.zh || m.chinese,
-                  english: m.en || m.english,
-                }))
-              )
-            }
+            onClick={() => {
+              // Make new array, shuffle, then send
+              const arr = movies.map((m) => ({
+                chinese: m.zh || m.chinese,
+                english: m.en || m.english,
+              }));
+              for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+              }
+              startWithDeck(arr);
+            }}
           >
             ▶️ {lang === "ch" ? "move that我睇過" : "Play My Movie Deck"}
           </button>
