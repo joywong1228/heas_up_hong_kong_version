@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { db } from "../src/_utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
+// Import your JSON
+import myMovies from "./data/my.json";
 
 const TEXT = {
   home: { ch: "← 返回主頁", en: "← Back to Home" },
@@ -17,6 +19,8 @@ const TEXT = {
 export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
   const [stats, setStats] = useState([]);
   const [decks, setDecks] = useState([]);
+  // Prepare movies array from your JSON
+  const movies = myMovies["Movie I Watch"] || [];
 
   // 讀排行榜
   useEffect(() => {
@@ -131,10 +135,10 @@ export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
                     >
                       {typeof w === "string"
                         ? w
-                        : w.chinese
+                        : w.chinese || w.zh
                         ? lang === "ch"
-                          ? w.chinese
-                          : w.english || w.chinese
+                          ? w.chinese || w.zh
+                          : w.english || w.en || w.chinese || w.zh
                         : ""}
                     </span>
                   ))}
@@ -167,6 +171,40 @@ export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
       </ul>
       {decks.length === 0 && (
         <div style={{ marginTop: 18, color: "#aaa" }}>{TEXT.noDeck[lang]}</div>
+      )}
+
+      {/* Play My Movie Deck button */}
+      {movies.length > 0 && (
+        <div style={{ textAlign: "center", marginTop: 38, marginBottom: 12 }}>
+          <button
+            style={{
+              background: "#f59e42",
+              color: "#fff",
+              border: "none",
+              borderRadius: 8,
+              padding: "13px 32px",
+              fontWeight: 700,
+              fontSize: 20,
+              cursor: "pointer",
+              boxShadow: "0 2px 8px #0002",
+            }}
+            onClick={() =>
+              startWithDeck(
+                movies.map((m) => ({
+                  chinese: m.zh || m.chinese,
+                  english: m.en || m.english,
+                }))
+              )
+            }
+          >
+            ▶️ {lang === "ch" ? "move that我睇過" : "Play My Movie Deck"}
+          </button>
+          {/* <div style={{ color: "#666", marginTop: 6, fontSize: 15 }}>
+            {lang === "ch"
+              ? `共 ${movies.length} 套電影`
+              : `${movies.length} movies`}
+          </div> */}
+        </div>
       )}
     </div>
   );
