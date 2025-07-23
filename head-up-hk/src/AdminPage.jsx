@@ -2,7 +2,19 @@ import { useEffect, useState } from "react";
 import { db } from "../src/_utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
-export default function AdminPage({ goHome, startWithDeck }) {
+const TEXT = {
+  home: { ch: "← 返回主頁", en: "← Back to Home" },
+  leaderboard: { ch: "Deck 使用排行榜", en: "Deck Usage Leaderboard" },
+  record: { ch: "次", en: "plays" },
+  noRecord: { ch: "無紀錄", en: "No Record" },
+  allDecks: { ch: "所有自訂題庫（Custom Decks）", en: "All Custom Decks" },
+  deck: { ch: "Deck", en: "Deck" },
+  items: { ch: "題", en: "items" },
+  play: { ch: "開始遊戲", en: "Start Game" },
+  noDeck: { ch: "暫時無自訂題庫", en: "No Custom Decks Yet" },
+};
+
+export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
   const [stats, setStats] = useState([]);
   const [decks, setDecks] = useState([]);
 
@@ -51,10 +63,10 @@ export default function AdminPage({ goHome, startWithDeck }) {
           cursor: "pointer",
         }}
       >
-        ← 返回主頁
+        {TEXT.home[lang]}
       </button>
       {/* 排行榜 */}
-      <h2 style={{ marginTop: 38 }}>Deck 使用排行榜</h2>
+      <h2 style={{ marginTop: 38 }}>{TEXT.leaderboard[lang]}</h2>
       <ul
         style={{ marginTop: 28, fontSize: 20, padding: 0, listStyle: "none" }}
       >
@@ -65,19 +77,19 @@ export default function AdminPage({ goHome, startWithDeck }) {
           >
             <span style={{ fontWeight: 700 }}>{i + 1}.</span>　{cat.category}
             <span style={{ float: "right", color: "#10b981", fontWeight: 700 }}>
-              {cat.count} 次
+              {cat.count} {TEXT.record[lang]}
             </span>
           </li>
         ))}
       </ul>
       {stats.length === 0 && (
-        <div style={{ marginTop: 48, color: "#aaa" }}>無紀錄</div>
+        <div style={{ marginTop: 48, color: "#aaa" }}>
+          {TEXT.noRecord[lang]}
+        </div>
       )}
 
       {/* 所有自定義題庫 */}
-      <h2 style={{ marginTop: 54, marginBottom: 12 }}>
-        所有自訂題庫（Custom Decks）
-      </h2>
+      <h2 style={{ marginTop: 54, marginBottom: 12 }}>{TEXT.allDecks[lang]}</h2>
       <ul style={{ marginTop: 12, padding: 0 }}>
         {decks.map((deck, idx) => (
           <li
@@ -90,7 +102,8 @@ export default function AdminPage({ goHome, startWithDeck }) {
             }}
           >
             <div style={{ fontWeight: 600, marginBottom: 4, fontSize: 22 }}>
-              • Deck #{idx + 1}（{deck.words?.length || 0} 題）
+              • {TEXT.deck[lang]} #{idx + 1}（{deck.words?.length || 0}{" "}
+              {TEXT.items[lang]}）
             </div>
             <div
               style={{
@@ -116,7 +129,13 @@ export default function AdminPage({ goHome, startWithDeck }) {
                         fontSize: 18,
                       }}
                     >
-                      {w}
+                      {typeof w === "string"
+                        ? w
+                        : w.chinese
+                        ? lang === "ch"
+                          ? w.chinese
+                          : w.english || w.chinese
+                        : ""}
                     </span>
                   ))}
               </div>
@@ -135,7 +154,7 @@ export default function AdminPage({ goHome, startWithDeck }) {
                 onClick={() => startWithDeck(deck.words)}
                 disabled={!deck.words || !deck.words.length}
               >
-                開始遊戲
+                {TEXT.play[lang]}
               </button>
             </div>
             {deck.createdAt && (
@@ -147,7 +166,7 @@ export default function AdminPage({ goHome, startWithDeck }) {
         ))}
       </ul>
       {decks.length === 0 && (
-        <div style={{ marginTop: 18, color: "#aaa" }}>暫時無自訂題庫</div>
+        <div style={{ marginTop: 18, color: "#aaa" }}>{TEXT.noDeck[lang]}</div>
       )}
     </div>
   );

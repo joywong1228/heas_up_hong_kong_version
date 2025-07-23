@@ -15,12 +15,51 @@ import {
   increment,
 } from "firebase/firestore";
 
+// Bilingual UI Text Dictionary
+const TEXT = {
+  title: { ch: "大電視", en: "Head Up" },
+  demo: { ch: "Demo版", en: "Demo" },
+  rules: { ch: "規則", en: "Rules" },
+  customDeck: { ch: "➕ 自定義題庫", en: "➕ Custom Deck" },
+  admin: { ch: "Admin Only", en: "Admin Only" },
+  selectTime: { ch: "選擇回合時間：", en: "Select Round Time:" },
+  selectCat: {
+    ch: "選擇類別（[EN] 表示有中英對照）：",
+    en: "Select Category ([EN] = bilingual):",
+  },
+  confirmStart: { ch: "確認開始", en: "Start" },
+  gameOver: { ch: "遊戲結束", en: "Game Over" },
+  score: { ch: "分數", en: "Score" },
+  review: { ch: "回顧：", en: "Review:" },
+  again: { ch: "再嚟一次", en: "Play Again" },
+  rulesTitle: { ch: "遊戲規則", en: "Game Rules" },
+  rulesContent: [
+    {
+      ch: "選擇類別和時間開始遊戲。",
+      en: "Select a category and time to start the game.",
+    },
+    {
+      ch: "每次顯示一個詞語，由隊友用粵語提示你猜。",
+      en: "Each time a word is shown, your teammate gives you Cantonese hints to guess.",
+    },
+    {
+      ch: "單擊畫面/按「估啱」＝記作對\n雙擊畫面/按「跳過」＝記作錯",
+      en: "Single tap/Press 'Correct' = right\nDouble tap/Press 'Skip' = wrong",
+    },
+    {
+      ch: "時間內盡量答中最多！",
+      en: "Guess as many as you can before time runs out!",
+    },
+  ],
+  rulesBtn: { ch: "明白了", en: "Got it" },
+};
+
 const timeOptions = [
-  { label: "30秒", value: 30 },
-  { label: "1分鐘", value: 60 },
-  { label: "2分鐘", value: 120 },
-  { label: "3分鐘", value: 180 },
-  { label: "5分鐘", value: 300 },
+  { label: { ch: "30秒", en: "30 sec" }, value: 30 },
+  { label: { ch: "1分鐘", en: "1 min" }, value: 60 },
+  { label: { ch: "2分鐘", en: "2 min" }, value: 120 },
+  { label: { ch: "3分鐘", en: "3 min" }, value: 180 },
+  { label: { ch: "5分鐘", en: "5 min" }, value: 300 },
 ];
 const categoryNames = Object.keys(categories);
 
@@ -42,6 +81,7 @@ async function recordDeckUsage(category) {
 }
 
 export default function App() {
+  const [lang, setLang] = useState("ch"); // "ch" = 中文, "en" = English
   const [stage, setStage] = useState("home");
   const [category, setCategory] = useState("");
   const [words, setWords] = useState([]);
@@ -69,7 +109,6 @@ export default function App() {
 
   // 主流程
   async function startGame() {
-    // 記錄 deck usage
     recordDeckUsage(category);
 
     setCountdown(3);
@@ -162,16 +201,17 @@ export default function App() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 style={{ fontWeight: 700, marginBottom: 12 }}>遊戲規則</h2>
+          <h2 style={{ fontWeight: 700, marginBottom: 12 }}>
+            {TEXT.rulesTitle[lang]}
+          </h2>
           <ol style={{ textAlign: "left", fontSize: 17, margin: "0 0 14px 0" }}>
-            <li>選擇類別和時間開始遊戲。</li>
-            <li>每次顯示一個詞語，由隊友用粵語提示你猜。</li>
-            <li>
-              <b>單擊</b>畫面/按「估啱」＝記作對
-              <br />
-              <b>雙擊</b>畫面/按「跳過」＝記作錯
-            </li>
-            <li>時間內盡量答中最多！</li>
+            {TEXT.rulesContent.map((item, i) => (
+              <li key={i}>
+                {item[lang].split("\n").map((line, idx) => (
+                  <div key={idx}>{line}</div>
+                ))}
+              </li>
+            ))}
           </ol>
           <button
             style={{
@@ -187,10 +227,19 @@ export default function App() {
             }}
             onClick={() => setShowRules(false)}
           >
-            明白了
+            {TEXT.rulesBtn[lang]}
           </button>
         </div>
       </div>
+    );
+  }
+
+  function isBilingualCategory(words) {
+    return (
+      Array.isArray(words) &&
+      words.length > 0 &&
+      typeof words[0] === "object" &&
+      words[0].english
     );
   }
 
@@ -200,7 +249,45 @@ export default function App() {
       {stage === "home" && (
         <>
           <div className="title">
-            大電視 <span className="subtitle">Demo版</span>
+            {TEXT.title[lang]}{" "}
+            <span className="subtitle">{TEXT.demo[lang]}</span>
+          </div>
+          <div>
+            {" "}
+            <button
+              style={{
+                marginLeft: 14,
+                borderRadius: 7,
+                border: "1px solid #999",
+                background: lang === "ch" ? "#f59e42" : "#fff",
+                color: lang === "ch" ? "#fff" : "#333",
+                fontWeight: 600,
+                fontSize: 15,
+                padding: "4px 12px",
+                cursor: "pointer",
+              }}
+              onClick={() => setLang("ch")}
+              disabled={lang === "ch"}
+            >
+              中文
+            </button>
+            <button
+              style={{
+                marginLeft: 6,
+                borderRadius: 7,
+                border: "1px solid #999",
+                background: lang === "en" ? "#f59e42" : "#fff",
+                color: lang === "en" ? "#fff" : "#333",
+                fontWeight: 600,
+                fontSize: 15,
+                padding: "4px 12px",
+                cursor: "pointer",
+              }}
+              onClick={() => setLang("en")}
+              disabled={lang === "en"}
+            >
+              English
+            </button>
           </div>
           <div
             style={{
@@ -219,7 +306,7 @@ export default function App() {
               }}
               onClick={() => setShowRules(true)}
             >
-              規則
+              {TEXT.rules[lang]}
             </button>
             <button
               className="btn"
@@ -232,7 +319,7 @@ export default function App() {
               }}
               onClick={() => setStage("customDeck")}
             >
-              ➕ 自定義題庫
+              {TEXT.customDeck[lang]}
             </button>
             {/* Admin Only 按鈕 */}
             <button
@@ -245,11 +332,11 @@ export default function App() {
               }}
               onClick={() => setStage("admin")}
             >
-              Admin Only
+              {TEXT.admin[lang]}
             </button>
           </div>
           <div style={{ fontWeight: 600, marginTop: 8, marginBottom: 8 }}>
-            選擇回合時間：
+            {TEXT.selectTime[lang]}
           </div>
           <div className="times">
             {timeOptions.map((opt) => (
@@ -260,11 +347,20 @@ export default function App() {
                 }`}
                 onClick={() => setRoundSeconds(opt.value)}
               >
-                {opt.label}
+                {opt.label[lang]}
               </button>
             ))}
           </div>
-          <div style={{ fontWeight: 600, marginBottom: 8 }}>選擇類別：</div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              fontWeight: 600,
+              marginBottom: 8,
+            }}
+          >
+            {TEXT.selectCat[lang]}
+          </div>
           <div className="categories">
             {categoryNames.map((c) => (
               <button
@@ -273,6 +369,22 @@ export default function App() {
                 onClick={() => setCategory(c)}
               >
                 {c}
+                {isBilingualCategory(categories[c]) && (
+                  <span
+                    style={{
+                      marginLeft: 6,
+                      background: "#222",
+                      color: "#fff",
+                      fontSize: "0.8em",
+                      padding: "1px 6px",
+                      borderRadius: "5px",
+                      fontWeight: 700,
+                      letterSpacing: 1,
+                    }}
+                  >
+                    EN
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -282,7 +394,7 @@ export default function App() {
             onClick={startGame}
             style={{ marginTop: 22 }}
           >
-            確認開始
+            {TEXT.confirmStart[lang]}
           </button>
           {showRules && <RulesModal />}
         </>
@@ -291,6 +403,7 @@ export default function App() {
         <CustomDeckPage
           goHome={() => setStage("home")}
           startWithDeck={startCustomDeckGame}
+          lang={lang}
         />
       )}
       {stage === "countdown" && (
@@ -322,18 +435,22 @@ export default function App() {
           timer={timer}
           nextWord={nextWord}
           goHome={goHome}
+          lang={lang}
         />
       )}
       {stage === "end" && (
         <>
           <div className="timer-bar">
-            <span className="timer">遊戲結束</span>
+            <span className="timer">{TEXT.gameOver[lang]}</span>
           </div>
           <div className="end-score">
-            分數: <span style={{ color: "#22c55e" }}>{score}</span> /{" "}
+            {TEXT.score[lang]}:{" "}
+            <span style={{ color: "#22c55e" }}>{score}</span> /{" "}
             <span style={{ color: "#ef4444" }}>{wrong}</span>
           </div>
-          <div style={{ margin: "20px 0", fontWeight: 600 }}>回顧：</div>
+          <div style={{ margin: "20px 0", fontWeight: 600 }}>
+            {TEXT.review[lang]}
+          </div>
           <ul
             style={{
               width: 320,
@@ -361,9 +478,11 @@ export default function App() {
                 {typeof res.word === "string" ? (
                   res.word
                 ) : (
-                  <>
-                    <span>{res.word.chinese}</span>
-                    {res.word.english && (
+                  <span>
+                    {lang === "ch"
+                      ? res.word.chinese
+                      : res.word.english || res.word.chinese}
+                    {res.word.english && lang === "ch" && (
                       <span
                         style={{
                           fontSize: 15,
@@ -374,13 +493,13 @@ export default function App() {
                         {res.word.english}
                       </span>
                     )}
-                  </>
+                  </span>
                 )}
               </li>
             ))}
           </ul>
           <button className="confirm-btn" onClick={restart}>
-            再嚟一次
+            {TEXT.again[lang]}
           </button>
         </>
       )}
@@ -396,8 +515,9 @@ export default function App() {
             setTimer(roundSeconds);
             setStage("game");
           }}
+          lang={lang}
         />
-      )}{" "}
+      )}
     </div>
   );
 }

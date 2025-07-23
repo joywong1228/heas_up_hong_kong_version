@@ -465,7 +465,7 @@
     "食戟之靈",
     "水果籃子"
   ],
-  "日本動漫（熱門）": [
+  "Anime（Hot）": [
     { "chinese": "龍珠", "english": "Dragon Ball" },
     { "chinese": "火影忍者", "english": "Naruto" },
     { "chinese": "死神", "english": "Bleach" },
@@ -1143,7 +1143,7 @@
     "阿忌",
     "超異能少年"
   ],
-  "經典電影": [
+  "Movie": [
     { "chinese": "美國隊長", "english": "Captain America" },
     { "chinese": "雷神索爾", "english": "Thor" },
     { "chinese": "奇異博士", "english": "Doctor Strange" },

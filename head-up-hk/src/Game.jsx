@@ -1,5 +1,19 @@
 import React, { useRef, useEffect } from "react";
 
+const TEXT = {
+  home: { ch: "← 返回主頁", en: "← Back to Home" },
+  timer: { ch: "⏰ {t} 秒", en: "⏰ {t} sec" },
+  category: { ch: "類別", en: "Category" },
+  score: { ch: "分數", en: "Score" },
+  correct: { ch: "估啱", en: "Correct" },
+  skip: { ch: "跳過", en: "Skip" },
+  hint: {
+    ch: "單擊：估啱 | 雙擊：跳過",
+    en: "Click: Correct | Double Click: Skip",
+  },
+  empty: { ch: "冇晒啦!", en: "No more!" },
+};
+
 export default function Game({
   words,
   current,
@@ -8,6 +22,7 @@ export default function Game({
   timer,
   nextWord,
   goHome,
+  lang = "ch", // default to Chinese if not specified
 }) {
   let clickTimeout = useRef(null);
 
@@ -36,7 +51,8 @@ export default function Game({
   }, []);
 
   function renderWord(word) {
-    if (!word) return <span style={{ color: "#e11d48" }}>冇晒啦!</span>;
+    if (!word)
+      return <span style={{ color: "#e11d48" }}>{TEXT.empty[lang]}</span>;
     if (typeof word === "string") {
       return <span style={{ fontSize: 28, fontWeight: 600 }}>{word}</span>;
     }
@@ -61,7 +77,6 @@ export default function Game({
     return null;
   }
 
-  // ...上略
   return (
     <div
       className="game-fullscreen"
@@ -78,11 +93,11 @@ export default function Game({
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
     >
-      {/* 返回主頁（左上） */}
+      {/* Go Home (top left) */}
       <button
         onClick={goHome}
         style={{
-          position: "fixed", // 用 fixed
+          position: "fixed",
           top: 24,
           left: 24,
           background: "#ececec",
@@ -95,10 +110,10 @@ export default function Game({
           zIndex: 99,
         }}
       >
-        ← 返回主頁
+        {TEXT.home[lang]}
       </button>
 
-      {/* Timer Bar（頂部中間，唔會被蓋住） */}
+      {/* Timer Bar */}
       <div
         className="timer-bar"
         style={{
@@ -109,10 +124,10 @@ export default function Game({
           fontWeight: 700,
         }}
       >
-        <span className="timer">⏰ {timer} 秒</span>
+        <span className="timer">{TEXT.timer[lang].replace("{t}", timer)}</span>
       </div>
       <div className="score-bar">
-        類別: {category}　|　分數: {score}
+        {TEXT.category[lang]}: {category}　|　{TEXT.score[lang]}: {score}
       </div>
       <div
         className="word-card"
@@ -155,7 +170,7 @@ export default function Game({
             nextWord(true);
           }}
         >
-          估啱
+          {TEXT.correct[lang]}
         </button>
         <button
           className="btn"
@@ -170,11 +185,11 @@ export default function Game({
             nextWord(false);
           }}
         >
-          跳過
+          {TEXT.skip[lang]}
         </button>
       </div>
       <div className="hint" style={{ zIndex: 2 }}>
-        <b>單擊</b>：估啱 | <b>雙擊</b>：跳過
+        <b>{TEXT.hint[lang]}</b>
       </div>
     </div>
   );
