@@ -34,13 +34,13 @@ const TEXT = {
       en: "No character limit per item; add each one separately.",
     },
     {
-      ch: "每加一題自動儲存一次（Admin 可見）",
-      en: "Each item is auto-saved (visible to Admin).",
+      ch: "每加一題自動儲存一次（去admin only度再玩過！）",
+      en: "Each item is auto-saved (can replay from the admin only page).",
     },
-    {
-      ch: "如需公開會再審批通知！",
-      en: "Will notify if public approval is needed!",
-    },
+    // {
+    //   ch: "如需公開會再審批通知！",
+    //   en: "Will notify if public approval is needed!",
+    // },
   ],
   gotIt: { ch: "明白了", en: "Got it" },
   maxed: { ch: "題庫已到上限：", en: "Deck limit reached:" },
