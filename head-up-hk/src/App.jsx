@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import categories from "./data/categories.json";
 import Game from "./Game";
 import AdminPage from "./AdminPage";
@@ -81,7 +81,7 @@ async function recordDeckUsage(category) {
 }
 
 export default function App() {
-  const [lang, setLang] = useState("ch"); // "ch" = 中文, "en" = English
+  const [lang, setLang] = useState("ch");
   const [stage, setStage] = useState("home");
   const [category, setCategory] = useState("");
   const [words, setWords] = useState([]);
@@ -93,24 +93,66 @@ export default function App() {
   const [results, setResults] = useState([]);
   const [showRules, setShowRules] = useState(false);
   const [countdown, setCountdown] = useState(0);
+
+  // Refs for intervals and for always-fresh state
   const intervalId = useRef(null);
   const countdownTimer = useRef(null);
+  const wordsRef = useRef(words);
+  const currentRef = useRef(current);
 
-  // 🔵 自定義 Deck 遊戲專用
-  function startCustomDeckGame(wordsArr) {
+  // Keep refs synced with state
+  useEffect(() => {
+    wordsRef.current = words;
+  }, [words]);
+  useEffect(() => {
+    currentRef.current = current;
+  }, [current]);
+
+  useEffect(() => {
+    // Only for custom decks: start timer if entering "game" and interval is not set
+    if (stage === "game" && intervalId.current == null) {
+      intervalId.current = setInterval(() => {
+        setTimer((t) => {
+          if (t <= 1) {
+            clearInterval(intervalId.current);
+            intervalId.current = null;
+            const lastWord = wordsRef.current[currentRef.current];
+            if (lastWord !== undefined) {
+              setResults((prev) => [
+                ...prev,
+                { word: lastWord, correct: false },
+              ]);
+            }
+            setStage("end");
+            return 0;
+          }
+          return t - 1;
+        });
+      }, 1000);
+    }
+    // Cleanup when leaving the game
+    return () => {
+      if (stage !== "game" && intervalId.current) {
+        clearInterval(intervalId.current);
+        intervalId.current = null;
+      }
+    };
+  }, [stage]);
+
+  // Custom Deck flow
+  function startCustomDeckGame(wordsArr, customTimer) {
     setWords([...wordsArr]);
     setCurrent(0);
     setScore(0);
     setWrong(0);
     setResults([]);
-    setTimer(roundSeconds);
+    setTimer(customTimer ?? roundSeconds); // prefer customTimer if given
     setStage("game");
   }
 
-  // 主流程
+  // Main flow
   async function startGame() {
     recordDeckUsage(category);
-
     setCountdown(3);
     setStage("countdown");
     let cd = 3;
@@ -139,6 +181,10 @@ export default function App() {
       setTimer((t) => {
         if (t <= 1) {
           clearInterval(intervalId.current);
+          const lastWord = wordsRef.current[currentRef.current];
+          if (lastWord !== undefined) {
+            setResults((prev) => [...prev, { word: lastWord, correct: false }]);
+          }
           setStage("end");
           return 0;
         }
@@ -175,7 +221,7 @@ export default function App() {
     restart();
   }
 
-  // 規則 Modal
+  // Rules Modal
   function RulesModal() {
     return (
       <div
@@ -253,7 +299,6 @@ export default function App() {
             <span className="subtitle">{TEXT.demo[lang]}</span>
           </div>
           <div>
-            {" "}
             <button
               style={{
                 marginLeft: 14,
@@ -362,31 +407,33 @@ export default function App() {
             {TEXT.selectCat[lang]}
           </div>
           <div className="categories">
-            {categoryNames.map((c) => (
-              <button
-                key={c}
-                className={`btn${category === c ? " selected" : ""}`}
-                onClick={() => setCategory(c)}
-              >
-                {c}
-                {isBilingualCategory(categories[c]) && (
-                  <span
-                    style={{
-                      marginLeft: 6,
-                      background: "#222",
-                      color: "#fff",
-                      fontSize: "0.8em",
-                      padding: "1px 6px",
-                      borderRadius: "5px",
-                      fontWeight: 700,
-                      letterSpacing: 1,
-                    }}
-                  >
-                    EN
-                  </span>
-                )}
-              </button>
-            ))}
+            {categoryNames
+              .filter((c) => !c.includes("Joy")) // <-- FILTER OUT "Joy" decks
+              .map((c) => (
+                <button
+                  key={c}
+                  className={`btn${category === c ? " selected" : ""}`}
+                  onClick={() => setCategory(c)}
+                >
+                  {c}
+                  {isBilingualCategory(categories[c]) && (
+                    <span
+                      style={{
+                        marginLeft: 6,
+                        background: "#222",
+                        color: "#fff",
+                        fontSize: "0.8em",
+                        padding: "1px 6px",
+                        borderRadius: "5px",
+                        fontWeight: 700,
+                        letterSpacing: 1,
+                      }}
+                    >
+                      EN
+                    </span>
+                  )}
+                </button>
+              ))}
           </div>
           <button
             className="confirm-btn"
@@ -506,15 +553,10 @@ export default function App() {
       {stage === "admin" && (
         <AdminPage
           goHome={() => setStage("home")}
-          startWithDeck={(words) => {
-            setWords(words);
-            setCurrent(0);
-            setScore(0);
-            setWrong(0);
-            setResults([]);
-            setTimer(roundSeconds);
-            setStage("game");
-          }}
+          startWithDeck={(words, customTimer) =>
+            startCustomDeckGame(words, customTimer)
+          }
+          roundSeconds={roundSeconds} // <--- add this line!
           lang={lang}
         />
       )}

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../src/_utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
-// Import your JSON
-import myMovies from "./data/my.json";
+import categories from "./data/categories.json"; // NEW: Import categories.json
 
 const TEXT = {
   home: { ch: "← 返回主頁", en: "← Back to Home" },
@@ -16,11 +15,23 @@ const TEXT = {
   noDeck: { ch: "暫時無自訂題庫", en: "No Custom Decks Yet" },
 };
 
-export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
+export default function AdminPage({
+  goHome,
+  startWithDeck,
+  lang = "ch",
+  roundSeconds = 60,
+}) {
   const [stats, setStats] = useState([]);
   const [decks, setDecks] = useState([]);
-  // Prepare movies array from your JSON
-  const movies = myMovies["Movie I Watch"] || [];
+
+  // Find every "Joy" deck
+  const joyDecks = Object.entries(categories)
+    .filter(([key]) => key.includes("Joy"))
+    .map(([key, items]) => ({
+      key,
+      items: Array.isArray(items) ? items : [],
+    }))
+    .filter((deck) => deck.items.length > 0);
 
   // 讀排行榜
   useEffect(() => {
@@ -69,6 +80,7 @@ export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
       >
         {TEXT.home[lang]}
       </button>
+
       {/* 排行榜 */}
       <h2 style={{ marginTop: 38 }}>{TEXT.leaderboard[lang]}</h2>
       <ul
@@ -155,7 +167,7 @@ export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
                   cursor: "pointer",
                   flexShrink: 0,
                 }}
-                onClick={() => startWithDeck(deck.words)}
+                onClick={() => startWithDeck(deck.words, roundSeconds)}
                 disabled={!deck.words || !deck.words.length}
               >
                 {TEXT.play[lang]}
@@ -173,41 +185,57 @@ export default function AdminPage({ goHome, startWithDeck, lang = "ch" }) {
         <div style={{ marginTop: 18, color: "#aaa" }}>{TEXT.noDeck[lang]}</div>
       )}
 
-      {/* Play My Movie Deck button */}
-      {movies.length > 0 && (
-        <div style={{ textAlign: "center", marginTop: 38, marginBottom: 12 }}>
-          <button
-            style={{
-              background: "#f59e42",
-              color: "#fff",
-              border: "none",
-              borderRadius: 8,
-              padding: "13px 32px",
-              fontWeight: 700,
-              fontSize: 20,
-              cursor: "pointer",
-              boxShadow: "0 2px 8px #0002",
-            }}
-            onClick={() => {
-              // Make new array, shuffle, then send
-              const arr = movies.map((m) => ({
-                chinese: m.zh || m.chinese,
-                english: m.en || m.english,
-              }));
-              for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-              }
-              startWithDeck(arr);
-            }}
-          >
-            ▶️ {lang === "ch" ? "move that我睇過" : "Play My Movie Deck"}
-          </button>
-          {/* <div style={{ color: "#666", marginTop: 6, fontSize: 15 }}>
-            {lang === "ch"
-              ? `共 ${movies.length} 套電影`
-              : `${movies.length} movies`}
-          </div> */}
+      {/* Joy Decks Section */}
+      {joyDecks.length > 0 && (
+        <div style={{ marginTop: 40 }}>
+          <h2 style={{ marginBottom: 12 }}>
+            {lang === "ch" ? "個人收藏題庫（Joy）" : "Joy Custom Decks"}
+          </h2>
+          {joyDecks.map((deck, idx) => (
+            <div
+              key={deck.key}
+              style={{
+                marginBottom: 28,
+                borderBottom: "1px solid #eee",
+                paddingBottom: 12,
+              }}
+            >
+              <div style={{ fontWeight: 600, fontSize: 22, marginBottom: 6 }}>
+                • {deck.key} ({deck.items.length} {TEXT.items[lang]})
+                <button
+                  style={{
+                    background: "#f59e42",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 8,
+                    padding: "8px 24px",
+                    fontWeight: 700,
+                    fontSize: 17,
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    // Shuffle this deck before starting
+                    const arr = deck.items.map((m) =>
+                      typeof m === "string"
+                        ? { chinese: m, english: m }
+                        : {
+                            chinese: m.zh || m.chinese || "",
+                            english:
+                              m.en || m.english || m.zh || m.chinese || "",
+                          }
+                    );
+                    for (let i = arr.length - 1; i > 0; i--) {
+                      const j = Math.floor(Math.random() * (i + 1));
+                      [arr[i], arr[j]] = [arr[j], arr[i]];
+                    }
+                    startWithDeck(arr, roundSeconds); // <---- pass roundSeconds here
+                  }}
+                >
+                  ▶️ {lang === "ch" ? "玩此題庫" : "Play This Deck"}
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
