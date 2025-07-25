@@ -1194,26 +1194,9 @@
     { "chinese": "抱抱龍", "english": "Rex" },
     { "chinese": "彈弓狗", "english": "Slinky Dog" },
     { "chinese": "豬仔銀行", "english": "Hamm" },
-
-    { "chinese": "神奇魔法棒", "english": "Magic Wand" },
     { "chinese": "玻璃鞋", "english": "Glass Slipper" },
     { "chinese": "魔法鏡", "english": "Magic Mirror" },
-    { "chinese": "南瓜馬車", "english": "Pumpkin Carriage" },
-    { "chinese": "紅蘋果", "english": "Red Apple" },
-    { "chinese": "阿拉丁神燈", "english": "Genie's Lamp" },
-    { "chinese": "長髮塔", "english": "Rapunzel's Tower" },
-    { "chinese": "睡美人的紡錘", "english": "Spinning Wheel" },
-    { "chinese": "魔法玫瑰", "english": "Enchanted Rose" },
-    { "chinese": "冰雪王國", "english": "Arendelle" },
-    { "chinese": "仙履奇緣城堡", "english": "Cinderella Castle" },
-    { "chinese": "夢幻花園", "english": "Enchanted Garden" },
-    { "chinese": "迪士尼樂園", "english": "Disneyland" },
-    { "chinese": "米奇頭耳朵", "english": "Mickey Ears" },
-    { "chinese": "高飛狗的房子", "english": "Goofy's House" },
-    { "chinese": "糖果屋", "english": "Candy House" },
-    { "chinese": "百畝森林", "english": "Hundred Acre Wood" },
-    { "chinese": "巴斯光年的太空船", "english": "Buzz Lightyear's Spaceship" },
-    { "chinese": "玩具箱", "english": "Toy Box" }
+    { "chinese": "南瓜馬車", "english": "Pumpkin Carriage" }
   ],
   "POKEMON": [
     { "chinese": "比加超", "english": "Pikachu" },
