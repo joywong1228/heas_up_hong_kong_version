@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import { fetchActorImage } from "./components/fecthStarImage";
 
 const TEXT = {
   home: { ch: "← 返回主頁", en: "← Back to Home" },
@@ -13,6 +14,38 @@ const TEXT = {
   },
   empty: { ch: "冇晒啦!", en: "No more!" },
 };
+
+function ActorImage({ name }) {
+  const [imgUrl, setImgUrl] = useState(null);
+
+  useEffect(() => {
+    let ignore = false;
+    if (name) {
+      fetchActorImage(name).then((url) => {
+        if (!ignore) setImgUrl(url);
+      });
+    }
+    return () => {
+      ignore = true;
+    };
+  }, [name]);
+
+  if (!imgUrl) return null;
+  return (
+    <img
+      src={imgUrl}
+      alt={name}
+      style={{
+        width: 110,
+        height: 140,
+        objectFit: "cover",
+        borderRadius: 12,
+        marginBottom: 8,
+        boxShadow: "0 2px 12px #0001",
+      }}
+    />
+  );
+}
 
 export default function Game({
   words,
@@ -51,11 +84,27 @@ export default function Game({
   }, []);
 
   function renderWord(word) {
+    // Change this category check to your actor deck category name
+    const isActorDeck = category === "演員 Movie Star" || category === "演員";
+
     if (!word)
       return <span style={{ color: "#e11d48" }}>{TEXT.empty[lang]}</span>;
+
     if (typeof word === "string") {
-      return <span style={{ fontSize: 28, fontWeight: 600 }}>{word}</span>;
+      return (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {isActorDeck && <ActorImage name={word} />}
+          <span style={{ fontSize: 28, fontWeight: 600 }}>{word}</span>
+        </div>
+      );
     }
+
     if (typeof word === "object") {
       return (
         <div
@@ -65,6 +114,7 @@ export default function Game({
             alignItems: "center",
           }}
         >
+          {isActorDeck && <ActorImage name={word.english || word.chinese} />}
           <span style={{ fontSize: 28, fontWeight: 600 }}>{word.chinese}</span>
           {word.english && (
             <span style={{ fontSize: 28, fontWeight: 600, marginTop: 8 }}>
