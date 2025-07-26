@@ -1,6 +1,7 @@
 // fetchActorImage.js
 
-const TMDB_KEY = process.env.REACT_APP_TMDB_KEY;
+// const TMDB_KEY = import.meta.env.REACT_APP_TMDB_KEY;
+const TMDB_KEY = "0892d817b06593c021f79693fbff9e78";
 
 export async function fetchActorImage(name) {
   if (!name) return null;
