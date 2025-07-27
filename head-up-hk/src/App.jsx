@@ -429,7 +429,7 @@ export default function App() {
                         letterSpacing: 1,
                       }}
                     >
-                      EN
+                      EN&中
                     </span>
                   )}
                 </button>
