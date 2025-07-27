@@ -24,7 +24,7 @@ const TEXT = {
   admin: { ch: "Admin Only", en: "Admin Only" },
   selectTime: { ch: "選擇回合時間：", en: "Select Round Time:" },
   selectCat: {
-    ch: "選擇類別（[EN] 表示有中英對照）：",
+    ch: "選擇類別（[EN＆中] 表示有中英對照）：",
     en: "Select Category ([EN] = bilingual):",
   },
   confirmStart: { ch: "確認開始", en: "Start" },
