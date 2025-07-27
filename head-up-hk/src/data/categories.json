@@ -1123,81 +1123,6 @@
     { "chinese": "讓子彈飛", "english": "Let the Bullets Fly" },
     { "chinese": "非誠勿擾", "english": "If You Are the One" }
   ],
-  "Disney": [
-    { "chinese": "獅子王", "english": "The Lion King" },
-    { "chinese": "阿拉丁", "english": "Aladdin" },
-    { "chinese": "美女與野獸", "english": "Beauty and the Beast" },
-    { "chinese": "小美人魚", "english": "The Little Mermaid" },
-    { "chinese": "冰雪奇緣", "english": "Frozen" },
-    { "chinese": "魔法滿屋", "english": "Encanto" },
-    { "chinese": "腦朋友", "english": "Inside Out" },
-    { "chinese": "天外奇蹟", "english": "Up" },
-    { "chinese": "海底奇兵", "english": "Finding Nemo" },
-    { "chinese": "玩具總動員", "english": "Toy Story" },
-    { "chinese": "魔髮奇緣", "english": "Tangled" },
-    { "chinese": "動物方城市", "english": "Zootopia" },
-    { "chinese": "大英雄天團", "english": "Big Hero 6" },
-    { "chinese": "汽車總動員", "english": "Cars" },
-    { "chinese": "超人特攻隊", "english": "The Incredibles" },
-    { "chinese": "反斗奇兵", "english": "Toy Story" },
-    { "chinese": "怪獸公司", "english": "Monsters, Inc." },
-    { "chinese": "魔法奇緣", "english": "Enchanted" },
-    { "chinese": "森林王子", "english": "The Jungle Book" },
-    { "chinese": "101斑點狗", "english": "101 Dalmatians" },
-
-    { "chinese": "米奇老鼠", "english": "Mickey Mouse" },
-    { "chinese": "米妮老鼠", "english": "Minnie Mouse" },
-    { "chinese": "唐老鴨", "english": "Donald Duck" },
-    { "chinese": "高飛狗", "english": "Goofy" },
-    { "chinese": "黛絲", "english": "Daisy Duck" },
-    { "chinese": "布魯托", "english": "Pluto" },
-    { "chinese": "奇奇", "english": "Chip" },
-    { "chinese": "蒂蒂", "english": "Dale" },
-    { "chinese": "辛巴", "english": "Simba" },
-    { "chinese": "娜娜", "english": "Nala" },
-    { "chinese": "木法沙", "english": "Mufasa" },
-    { "chinese": "史卡", "english": "Scar" },
-    { "chinese": "阿拉丁", "english": "Aladdin" },
-    { "chinese": "茉莉公主", "english": "Princess Jasmine" },
-    { "chinese": "神燈精靈", "english": "Genie" },
-    { "chinese": "賈方", "english": "Jafar" },
-    { "chinese": "貝兒", "english": "Belle" },
-    { "chinese": "野獸", "english": "Beast" },
-    { "chinese": "艾莎", "english": "Elsa" },
-    { "chinese": "安娜", "english": "Anna" },
-    { "chinese": "奧拉夫", "english": "Olaf" },
-    { "chinese": "漢斯王子", "english": "Prince Hans" },
-    { "chinese": "樂佩公主", "english": "Rapunzel" },
-    { "chinese": "長髮公主", "english": "Rapunzel" },
-    { "chinese": "莫阿娜", "english": "Moana" },
-    { "chinese": "瑪莉達公主", "english": "Merida" },
-    { "chinese": "小魚尼莫", "english": "Nemo" },
-    { "chinese": "多莉", "english": "Dory" },
-    { "chinese": "烏蘇拉", "english": "Ursula" },
-    { "chinese": "小美人魚愛麗兒", "english": "Ariel" },
-    { "chinese": "長鼻木偶皮諾丘", "english": "Pinocchio" },
-    { "chinese": "白雪公主", "english": "Snow White" },
-    { "chinese": "灰姑娘", "english": "Cinderella" },
-    { "chinese": "睡美人奧蘿拉", "english": "Aurora" },
-    { "chinese": "愛麗絲", "english": "Alice" },
-    { "chinese": "小飛俠彼得潘", "english": "Peter Pan" },
-    { "chinese": "小熊維尼", "english": "Winnie the Pooh" },
-    { "chinese": "跳跳虎", "english": "Tigger" },
-    { "chinese": "豬仔", "english": "Piglet" },
-    { "chinese": "依唷", "english": "Eeyore" },
-    { "chinese": "賓尼兔", "english": "Rabbit" },
-    { "chinese": "毛怪", "english": "Sulley" },
-    { "chinese": "大眼仔", "english": "Mike Wazowski" },
-    { "chinese": "閃電麥坤", "english": "Lightning McQueen" },
-    { "chinese": "胡迪", "english": "Woody" },
-    { "chinese": "巴斯光年", "english": "Buzz Lightyear" },
-    { "chinese": "抱抱龍", "english": "Rex" },
-    { "chinese": "彈弓狗", "english": "Slinky Dog" },
-    { "chinese": "豬仔銀行", "english": "Hamm" },
-    { "chinese": "玻璃鞋", "english": "Glass Slipper" },
-    { "chinese": "魔法鏡", "english": "Magic Mirror" },
-    { "chinese": "南瓜馬車", "english": "Pumpkin Carriage" }
-  ],
   "POKEMON": [
     { "chinese": "比加超", "english": "Pikachu" },
     { "chinese": "比超", "english": "Raichu" },
@@ -3073,6 +2998,313 @@
       "english": "「叮噹可否不要老」"
     },
     { "chinese": "幻變之旅讓你伴我遇見的謎", "english": "「叮噹可否不要老」" },
-    { "chinese": "原來一閃即過 再沒重現", "english": "「叮噹可否不要老」" }
+    { "chinese": "原來一閃即過 再沒重現", "english": "「叮噹可否不要老」" },
+
+    { "chinese": "尚有最遠那串星體照亮市鎮", "english": "「無名指的光環」" },
+    { "chinese": "驚生命餘下是一滴塵", "english": "「無名指的光環」" },
+    { "chinese": "宇宙裏 看地殼每秒鐘抖震", "english": "「無名指的光環」" },
+    { "chinese": "就算今晚冥王星也運行到極限", "english": "「無名指的光環」" },
+    { "chinese": "脈搏再遞減會習慣", "english": "「無名指的光環」" },
+
+    { "chinese": "心覺得很寒 海有點風浪", "english": "「失戀有獎」" },
+    { "chinese": "就算贊譽我獨享 在笑裏仍藏哀傷", "english": "「失戀有獎」" },
+    { "chinese": "回家看影碟 一張不喜愛看有下張", "english": "「失戀有獎」" },
+    { "chinese": "跟這四幅墻 講我的旨望", "english": "「失戀有獎」" },
+    { "chinese": "離開那一些 當初一起誑過老地方", "english": "「失戀有獎」" }
+  ],
+  "Disney": [
+    { "chinese": "獅子王", "english": "The Lion King" },
+    { "chinese": "辛巴", "english": "Simba (The Lion King)" },
+    { "chinese": "娜娜", "english": "Nala (The Lion King)" },
+    { "chinese": "木法沙", "english": "Mufasa (The Lion King)" },
+    { "chinese": "史卡", "english": "Scar (The Lion King)" },
+
+    { "chinese": "阿拉丁", "english": "Aladdin" },
+    { "chinese": "茉莉公主", "english": "Princess Jasmine (Aladdin)" },
+    { "chinese": "神燈精靈", "english": "Genie (Aladdin)" },
+    { "chinese": "賈方", "english": "Jafar (Aladdin)" },
+    { "chinese": "阿布", "english": "Abu (Aladdin)" },
+
+    { "chinese": "美女與野獸", "english": "Beauty and the Beast" },
+    { "chinese": "貝兒", "english": "Belle (Beauty and the Beast)" },
+    { "chinese": "野獸", "english": "Beast (Beauty and the Beast)" },
+    { "chinese": "葛士華", "english": "Gaston (Beauty and the Beast)" },
+    { "chinese": "盧米亞", "english": "Lumière (Beauty and the Beast)" },
+    { "chinese": "小美人魚", "english": "The Little Mermaid" },
+    { "chinese": "愛麗兒", "english": "Ariel (The Little Mermaid)" },
+    { "chinese": "烏蘇拉", "english": "Ursula (The Little Mermaid)" },
+    { "chinese": "愛瑞克王子", "english": "Prince Eric (The Little Mermaid)" },
+    { "chinese": "賽巴斯丁", "english": "Sebastian (The Little Mermaid)" },
+
+    { "chinese": "冰雪奇緣", "english": "Frozen" },
+    { "chinese": "艾莎", "english": "Elsa (Frozen)" },
+    { "chinese": "安娜", "english": "Anna (Frozen)" },
+    { "chinese": "奧拉夫", "english": "Olaf (Frozen)" },
+    { "chinese": "漢斯王子", "english": "Prince Hans (Frozen)" },
+
+    { "chinese": "魔法滿屋", "english": "Encanto" },
+    { "chinese": "米拉貝兒", "english": "Mirabel (Encanto)" },
+    { "chinese": "阿布拉", "english": "Abuela Alma (Encanto)" },
+    { "chinese": "布魯諾", "english": "Bruno (Encanto)" },
+    { "chinese": "路易莎", "english": "Luisa (Encanto)" },
+
+    { "chinese": "腦朋友", "english": "Inside Out" },
+    { "chinese": "樂樂", "english": "Joy (Inside Out)" },
+    { "chinese": "憂憂", "english": "Sadness (Inside Out)" },
+    { "chinese": "怒怒", "english": "Anger (Inside Out)" },
+    { "chinese": "驚驚", "english": "Fear (Inside Out)" },
+
+    { "chinese": "天外奇蹟", "english": "Up" },
+    { "chinese": "卡爾", "english": "Carl (Up)" },
+    { "chinese": "羅素", "english": "Russell (Up)" },
+    { "chinese": "小杜", "english": "Dug (Up)" },
+    { "chinese": "奇異鳥凱文", "english": "Kevin (Up)" },
+
+    { "chinese": "星際寶貝", "english": "Lilo & Stitch" },
+    { "chinese": "史迪仔", "english": "Stitch (Lilo & Stitch)" },
+    { "chinese": "莉蘿", "english": "Lilo (Lilo & Stitch)" },
+    { "chinese": "娜妮", "english": "Nani (Lilo & Stitch)" },
+    { "chinese": "剛剛博士", "english": "Dr. Jumbaa Jookiba (Lilo & Stitch)" },
+
+    { "chinese": "海底奇兵", "english": "Finding Nemo" },
+    { "chinese": "尼莫", "english": "Nemo (Finding Nemo)" },
+    { "chinese": "多莉", "english": "Dory (Finding Nemo)" },
+
+    { "chinese": "玩具總動員", "english": "Toy Story" },
+    { "chinese": "胡迪", "english": "Woody (Toy Story)" },
+    { "chinese": "巴斯光年", "english": "Buzz Lightyear (Toy Story)" },
+    { "chinese": "抱抱龍", "english": "Rex (Toy Story)" },
+    { "chinese": "彈弓狗", "english": "Slinky Dog (Toy Story)" },
+
+    { "chinese": "魔髮奇緣", "english": "Tangled" },
+    { "chinese": "樂佩公主", "english": "Rapunzel (Tangled)" },
+    { "chinese": "費林", "english": "Flynn Rider (Tangled)" },
+    { "chinese": "馬克西姆斯", "english": "Maximus (Tangled)" },
+    { "chinese": "長髮魔女", "english": "Mother Gothel (Tangled)" },
+
+    { "chinese": "動物方城市", "english": "Zootopia" },
+    { "chinese": "茱蒂", "english": "Judy Hopps (Zootopia)" },
+    { "chinese": "尼克", "english": "Nick Wilde (Zootopia)" },
+    { "chinese": "阿力警長", "english": "Chief Bogo (Zootopia)" },
+    { "chinese": "閃電", "english": "Flash (Zootopia)" },
+
+    { "chinese": "大英雄天團", "english": "Big Hero 6" },
+    { "chinese": "廣", "english": "Hiro Hamada (Big Hero 6)" },
+    { "chinese": "杯麵", "english": "Baymax (Big Hero 6)" },
+    { "chinese": "小蜜", "english": "Go Go Tomago (Big Hero 6)" },
+    { "chinese": "華斯比", "english": "Wasabi (Big Hero 6)" },
+
+    { "chinese": "超人特攻隊", "english": "The Incredibles" },
+    { "chinese": "超能先生", "english": "Mr. Incredible (The Incredibles)" },
+    { "chinese": "彈力女超人", "english": "Elastigirl (The Incredibles)" },
+    { "chinese": "巴小飛", "english": "Dash (The Incredibles)" },
+    { "chinese": "紫怡", "english": "Violet (The Incredibles)" },
+
+    { "chinese": "反斗奇兵", "english": "Toy Story" },
+    { "chinese": "胡迪", "english": "Woody (Toy Story)" },
+    { "chinese": "巴斯光年", "english": "Buzz Lightyear (Toy Story)" },
+    { "chinese": "翠絲", "english": "Jessie (Toy Story)" },
+    { "chinese": "豬仔銀行", "english": "Hamm (Toy Story)" },
+
+    { "chinese": "怪獸公司", "english": "Monsters, Inc." },
+    { "chinese": "毛怪", "english": "Sulley (Monsters, Inc.)" },
+    { "chinese": "大眼仔", "english": "Mike Wazowski (Monsters, Inc.)" },
+    { "chinese": "阿Boo", "english": "Boo (Monsters, Inc.)" },
+    { "chinese": "水怪", "english": "Randall (Monsters, Inc.)" },
+
+    { "chinese": "101斑點狗", "english": "101 Dalmatians" },
+    { "chinese": "斑點狗媽媽", "english": "Perdita (101 Dalmatians)" },
+    { "chinese": "斑點狗爸爸", "english": "Pongo (101 Dalmatians)" },
+    { "chinese": "古莉拉", "english": "Cruella de Vil (101 Dalmatians)" },
+    { "chinese": "小斑點狗", "english": "Lucky (101 Dalmatians)" },
+
+    { "chinese": "米奇老鼠", "english": "Mickey Mouse" },
+    { "chinese": "米妮老鼠", "english": "Minnie Mouse" },
+    { "chinese": "唐老鴨", "english": "Donald Duck" },
+    { "chinese": "高飛狗", "english": "Goofy" },
+    { "chinese": "黛絲", "english": "Daisy Duck" },
+    { "chinese": "布魯托", "english": "Pluto" },
+
+    {
+      "chinese": "白雪公主",
+      "english": "Snow White and the Seven Dwarfs"
+    },
+    {
+      "chinese": "白雪公主",
+      "english": "Snow White (Snow White)"
+    },
+    {
+      "chinese": "七個小矮人",
+      "english": "The Seven Dwarfs (Snow White)"
+    },
+    {
+      "chinese": "皇后",
+      "english": "The Evil Queen (Snow White)"
+    },
+    {
+      "chinese": "魔鏡",
+      "english": "The Magic Mirror (Snow White)"
+    },
+
+    {
+      "chinese": "灰姑娘",
+      "english": "Cinderella"
+    },
+    {
+      "chinese": "灰姑娘",
+      "english": "Cinderella (Cinderella)"
+    },
+    {
+      "chinese": "仙女教母",
+      "english": "Fairy Godmother (Cinderella)"
+    },
+    {
+      "chinese": "玻璃鞋",
+      "english": "Glass Slipper (Cinderella)"
+    },
+
+    {
+      "chinese": "睡美人",
+      "english": "Sleeping Beauty"
+    },
+    {
+      "chinese": "奧蘿拉公主",
+      "english": "Princess Aurora (Sleeping Beauty)"
+    },
+
+    {
+      "chinese": "小飛俠彼得潘",
+      "english": "Peter Pan"
+    },
+    {
+      "chinese": "彼得潘",
+      "english": "Peter Pan (Peter Pan)"
+    },
+    {
+      "chinese": "溫蒂",
+      "english": "Wendy (Peter Pan)"
+    },
+    {
+      "chinese": "虎克船長",
+      "english": "Captain Hook (Peter Pan)"
+    },
+    {
+      "chinese": "小叮噹",
+      "english": "Tinker Bell (Peter Pan)"
+    },
+
+    {
+      "chinese": "小熊維尼",
+      "english": "Winnie the Pooh"
+    },
+    {
+      "chinese": "跳跳虎",
+      "english": "Tigger (Winnie the Pooh)"
+    },
+    {
+      "chinese": "豬仔",
+      "english": "Piglet (Winnie the Pooh)"
+    },
+    {
+      "chinese": "依唷",
+      "english": "Eeyore (Winnie the Pooh)"
+    },
+    {
+      "chinese": "勇敢傳說",
+      "english": "Brave"
+    },
+
+    {
+      "chinese": "公主與青蛙",
+      "english": "The Princess and the Frog"
+    },
+    {
+      "chinese": "蒂安娜",
+      "english": "Tiana (The Princess and the Frog)"
+    },
+
+    {
+      "chinese": "無敵破壞王",
+      "english": "Wreck-It Ralph"
+    },
+    {
+      "chinese": "拉爾夫",
+      "english": "Ralph (Wreck-It Ralph)"
+    },
+    {
+      "chinese": "雲妮露",
+      "english": "Vanellope (Wreck-It Ralph)"
+    },
+
+    {
+      "chinese": "可可夜總會",
+      "english": "Coco"
+    },
+    {
+      "chinese": "米高",
+      "english": "Miguel (Coco)"
+    },
+
+    {
+      "chinese": "達丹特",
+      "english": "Dante (Coco)"
+    },
+    {
+      "chinese": "可可奶奶",
+      "english": "Mamá Coco (Coco)"
+    },
+    {
+      "chinese": "愛麗絲夢遊仙境",
+      "english": "Alice in Wonderland"
+    },
+    {
+      "chinese": "愛麗絲",
+      "english": "Alice (Alice in Wonderland)"
+    },
+    {
+      "chinese": "瘋帽子",
+      "english": "Mad Hatter (Alice in Wonderland)"
+    },
+    {
+      "chinese": "紅心皇后",
+      "english": "Queen of Hearts (Alice in Wonderland)"
+    },
+    {
+      "chinese": "柴郡貓",
+      "english": "Cheshire Cat (Alice in Wonderland)"
+    },
+    { "chinese": "海洋奇緣", "english": "Moana" },
+    { "chinese": "莫阿娜", "english": "Moana (Moana)" },
+    { "chinese": "毛伊", "english": "Maui (Moana)" },
+
+    { "chinese": "大力士", "english": "Hercules" },
+
+    { "chinese": "花木蘭", "english": "Mulan" },
+    { "chinese": "木蘭", "english": "Mulan (Mulan)" },
+    { "chinese": "木須龍", "english": "Mushu (Mulan)" },
+    { "chinese": "料理鼠王", "english": "Ratatouille" },
+    { "chinese": "波卡洪塔斯", "english": "Pocahontas" },
+    { "chinese": "大英雄天團", "english": "Big Hero 6" },
+    { "chinese": "大白", "english": "Baymax (Big Hero 6)" },
+    { "chinese": "小宏", "english": "Hiro Hamada (Big Hero 6)" },
+
+    { "chinese": "風中奇緣", "english": "Pocahontas" },
+    { "chinese": "寶嘉康蒂", "english": "Pocahontas (Pocahontas)" },
+    { "chinese": "小飛象", "english": "Dumbo" },
+
+    { "chinese": "高中音樂劇", "english": "High School Musical" },
+    {
+      "chinese": "特洛伊·波爾頓",
+      "english": "Troy Bolton (High School Musical)"
+    },
+    {
+      "chinese": "加布里埃拉·蒙特茲",
+      "english": "Gabriella Montez (High School Musical)"
+    },
+    {
+      "chinese": "夏納·伊凡斯",
+      "english": "Sharpay Evans (High School Musical)"
+    },
+    { "chinese": "四眼雞丁", "english": "Chicken Little" }
   ]
 }
